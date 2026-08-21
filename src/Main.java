@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 public class Main {
 
@@ -18,7 +20,7 @@ public class Main {
         int choice = scanner.nextInt();
 
         if (choice == 1) {
-            System.out.println("Checking core...");
+            checkCore();
         } else if (choice == 2) {
             System.out.println("Goodbye!");
         } else {
@@ -27,4 +29,28 @@ public class Main {
 
         scanner.close();
     }
+    public static void checkCore() {
+
+    String host = "core";
+    int port = 22;
+    int timeout = 3000;
+
+    System.out.println("Checking core...");
+
+    try {
+        Socket socket = new Socket();
+
+        socket.connect(
+            new InetSocketAddress(host, port),
+            timeout
+        );
+
+        System.out.println("core is ONLINE");
+
+        socket.close();
+
+    } catch (Exception e) {
+        System.out.println("core is OFFLINE or unreachable");
+    }
+}
 }
