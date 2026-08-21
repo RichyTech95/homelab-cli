@@ -47,16 +47,24 @@ public class Main {
         System.out.println("Checking core...");
 
         try {
-            Socket socket = new Socket();
+			Socket socket = new Socket();
 
-            socket.connect(
-                new InetSocketAddress(host, port),
-                timeout
-            );
+			long startTime = System.nanoTime();
 
-            System.out.println("core is ONLINE");
+			socket.connect(
+				new InetSocketAddress(host, port),
+				timeout
+			);
 
-            socket.close();
+			long endTime = System.nanoTime();
+
+			long connectionTime = (endTime - startTime) / 1_000_000;
+
+			System.out.println("core is ONLINE");
+			System.out.println("SSH port: " + port);
+			System.out.println("Connection time: " + connectionTime + " ms");
+
+			socket.close();
 
         } catch (Exception e) {
             System.out.println("core is OFFLINE or unreachable");
