@@ -24,8 +24,16 @@ public class Main {
             int choice = scanner.nextInt();
 
             if (choice == 1) {
-                checkCore();
 
+				long connectionTime = getCoreConnectionTime();
+
+				if (connectionTime >= 0) {
+				System.out.println("core is ONLINE");
+				System.out.println("SSH port: 22");
+				System.out.println("Connection time: " + connectionTime + " ms");
+			} else {
+				System.out.println("core is OFFLINE or unreachable");
+			}
             } else if (choice == 2) {
                 System.out.println("Goodbye!");
                 running = false;
@@ -37,37 +45,36 @@ public class Main {
 
         scanner.close();
     }
+		public static long getCoreConnectionTime() {
 
-    public static void checkCore() {
+			String host = "core";
+			int port = 22;
+			int timeout = 3000;
 
-        String host = "core";
-        int port = 22;
-        int timeout = 3000;
+			System.out.println("Checking core...");
 
-        System.out.println("Checking core...");
+			try {
+				Socket socket = new Socket();
 
-        try {
-			Socket socket = new Socket();
+				long startTime = System.nanoTime();
 
-			long startTime = System.nanoTime();
+				socket.connect(
+					new InetSocketAddress(host, port),
+					timeout
+				);
 
-			socket.connect(
-				new InetSocketAddress(host, port),
-				timeout
-			);
+				long endTime = System.nanoTime();
 
-			long endTime = System.nanoTime();
+				socket.close();
 
-			long connectionTime = (endTime - startTime) / 1_000_000;
+				long connectionTime = (endTime - startTime) / 1_000_000;
 
-			System.out.println("core is ONLINE");
-			System.out.println("SSH port: " + port);
-			System.out.println("Connection time: " + connectionTime + " ms");
+				return connectionTime;
 
-			socket.close();
+			} catch (Exception e) {
 
-        } catch (Exception e) {
-            System.out.println("core is OFFLINE or unreachable");
-        }
+				return -1;
     }
+}
+    
 }
