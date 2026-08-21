@@ -3,54 +3,63 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class Main {
-
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("========================");
-        System.out.println("     RICHY HOMELAB");
-        System.out.println("========================");
-        System.out.println();
-        System.out.println("1. Check core");
-        System.out.println("2. Exit");
-        System.out.println();
-        System.out.print("Select an option: ");
+        boolean running = true;
 
-        int choice = scanner.nextInt();
+        while (running) {
 
-        if (choice == 1) {
-            checkCore();
-        } else if (choice == 2) {
-            System.out.println("Goodbye!");
-        } else {
-            System.out.println("Invalid option.");
+            System.out.println();
+            System.out.println("========================");
+            System.out.println("     RICHY HOMELAB");
+            System.out.println("========================");
+            System.out.println();
+            System.out.println("1. Check core");
+            System.out.println("2. Exit");
+            System.out.println();
+            System.out.print("Select an option: ");
+
+            int choice = scanner.nextInt();
+
+            if (choice == 1) {
+                checkCore();
+
+            } else if (choice == 2) {
+                System.out.println("Goodbye!");
+                running = false;
+
+            } else {
+                System.out.println("Invalid option.");
+            }
         }
 
         scanner.close();
     }
+
     public static void checkCore() {
 
-    String host = "core";
-    int port = 22;
-    int timeout = 3000;
+        String host = "core";
+        int port = 22;
+        int timeout = 3000;
 
-    System.out.println("Checking core...");
+        System.out.println("Checking core...");
 
-    try {
-        Socket socket = new Socket();
+        try {
+            Socket socket = new Socket();
 
-        socket.connect(
-            new InetSocketAddress(host, port),
-            timeout
-        );
+            socket.connect(
+                new InetSocketAddress(host, port),
+                timeout
+            );
 
-        System.out.println("core is ONLINE");
+            System.out.println("core is ONLINE");
 
-        socket.close();
+            socket.close();
 
-    } catch (Exception e) {
-        System.out.println("core is OFFLINE or unreachable");
+        } catch (Exception e) {
+            System.out.println("core is OFFLINE or unreachable");
+        }
     }
-}
 }
