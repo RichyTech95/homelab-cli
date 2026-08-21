@@ -25,7 +25,13 @@ public class Main {
 
             if (choice == 1) {
 
-				long connectionTime = getCoreConnectionTime();
+				String host = "core";
+				int port = 22;
+				int timeout = 3000;
+
+				System.out.println("Checking " + host + "...");
+
+				long connectionTime = getConnectionTime(host, port, timeout);
 
 				if (connectionTime >= 0) {
 				System.out.println("core is ONLINE");
@@ -45,11 +51,7 @@ public class Main {
 
         scanner.close();
     }
-		public static long getCoreConnectionTime() {
-
-			String host = "core";
-			int port = 22;
-			int timeout = 3000;
+		public static long getConnectionTime(String host, int port, int timeout) {
 
 			System.out.println("Checking core...");
 
