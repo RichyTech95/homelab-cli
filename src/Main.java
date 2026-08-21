@@ -23,37 +23,46 @@ public class Main {
 
             int choice = scanner.nextInt();
 
-            if (choice == 1) {
+			if (choice == 1) {
 
-				String host = "core";
-				int port = 22;
-				int timeout = 3000;
+				checkService("SSH", "core", 22, 3000);
+				checkService("Pi-hole HTTP", "core", 80, 3000);
+				checkService("Pi-hole HTTPS", "core", 443, 3000);
 
-				System.out.println("Checking " + host + "...");
+			} else if (choice == 2) {
 
-				long connectionTime = getConnectionTime(host, port, timeout);
+				System.out.println("Goodbye!");
+				running = false;
 
-				if (connectionTime >= 0) {
-				System.out.println("core is ONLINE");
-				System.out.println("SSH port: 22");
-				System.out.println("Connection time: " + connectionTime + " ms");
 			} else {
-				System.out.println("core is OFFLINE or unreachable");
+
+				System.out.println("Invalid option.");
 			}
-            } else if (choice == 2) {
-                System.out.println("Goodbye!");
-                running = false;
-
-            } else {
-                System.out.println("Invalid option.");
-            }
-        }
-
+		}
         scanner.close();
-    }
-		public static long getConnectionTime(String host, int port, int timeout) {
+    
+	}
+   		public static void checkService(
+				String serviceName,
+				String host,
+				int port,
+				int timeout) {
 
-			System.out.println("Checking core...");
+			System.out.println();
+			System.out.println("Checking " + serviceName + "...");
+
+			long responseTime = getConnectionTime(host, port, timeout);
+
+			if (responseTime >= 0) {
+				System.out.println(serviceName + " is ONLINE");
+				System.out.println("Host: " + host);
+				System.out.println("Port: " + port);
+				System.out.println("Connection time: " + responseTime + " ms");
+			} else {
+				System.out.println(serviceName + " is OFFLINE or unreachable");
+			}
+	}
+		public static long getConnectionTime(String host, int port, int timeout) {
 
 			try {
 				Socket socket = new Socket();
@@ -76,7 +85,9 @@ public class Main {
 			} catch (Exception e) {
 
 				return -1;
-    }
+			}
+	}
 }
+
     
-}
+
