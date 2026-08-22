@@ -7,12 +7,13 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         
-        Service ssh = new Service("SSH", "core", 22, 3000);
+        Service[] services = { 
+			new Service("SSH", "core", 22, 3000),
         
-        Service piHoleHttp = new Service("Pi-hole HTTP", "core", 80, 3000);
+			new Service("Pi-hole HTTP", "core", 80, 3000),
         
-        Service piHoleHttps = new Service("Pi-Hole HTTPS", "core", 443, 3000);
-
+			new Service("Pi-Hole HTTPS", "core", 443, 3000),
+		};
         boolean running = true;
 
         while (running) {
@@ -31,9 +32,9 @@ public class Main {
 
 			if (choice == 1) {
 
-				checkService(ssh);
-				checkService(piHoleHttp);
-				checkService(piHoleHttps);
+				for (Service service : services) {
+					checkService(service);
+				}	
 
 			} else if (choice == 2) {
 
