@@ -52,21 +52,21 @@ public class Main {
 			public static void checkService(Service service) {
 
 				System.out.println();
-				System.out.println("Checking " + service.name + "...");
+				System.out.println("Checking " + service.getName() + "...");
 
 				long responseTime = getConnectionTime(
-						service.host,
-						service.port,
-						service.timeout
+						service.getHost(),
+						service.getPort(),
+						service.getTimeout()
 				);
 
 				if (responseTime >= 0) {
-					System.out.println(service.name + " is ONLINE");
-					System.out.println("Host: " + service.host);
-					System.out.println("Port: " + service.port);
+					System.out.println(service.getName() + " is ONLINE");
+					System.out.println("Host: " + service.getHost());
+					System.out.println("Port: " + service.getPort());
 					System.out.println("Connection time: " + responseTime + " ms");
 				} else {
-					System.out.println(service.name + " is OFFLINE or unreachable");
+					System.out.println(service.getName() + " is OFFLINE or unreachable");
 			}
 	}
 		public static long getConnectionTime(String host, int port, int timeout) {
