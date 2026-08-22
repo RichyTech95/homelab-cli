@@ -6,6 +6,12 @@ public class Main {
 	public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        
+        Service ssh = new Service("SSH", "core", 22, 3000);
+        
+        Service piHoleHttp = new Service("Pi-hole HTTP", "core", 80, 3000);
+        
+        Service piHoleHttps = new Service("Pi-Hole HTTPS", "core", 443, 3000);
 
         boolean running = true;
 
@@ -25,9 +31,9 @@ public class Main {
 
 			if (choice == 1) {
 
-				checkService("SSH", "core", 22, 3000);
-				checkService("Pi-hole HTTP", "core", 80, 3000);
-				checkService("Pi-hole HTTPS", "core", 443, 3000);
+				checkService(ssh);
+				checkService(piHoleHttp);
+				checkService(piHoleHttps);
 
 			} else if (choice == 2) {
 
@@ -42,24 +48,24 @@ public class Main {
         scanner.close();
     
 	}
-   		public static void checkService(
-				String serviceName,
-				String host,
-				int port,
-				int timeout) {
+			public static void checkService(Service service) {
 
-			System.out.println();
-			System.out.println("Checking " + serviceName + "...");
+				System.out.println();
+				System.out.println("Checking " + service.name + "...");
 
-			long responseTime = getConnectionTime(host, port, timeout);
+				long responseTime = getConnectionTime(
+						service.host,
+						service.port,
+						service.timeout
+				);
 
-			if (responseTime >= 0) {
-				System.out.println(serviceName + " is ONLINE");
-				System.out.println("Host: " + host);
-				System.out.println("Port: " + port);
-				System.out.println("Connection time: " + responseTime + " ms");
-			} else {
-				System.out.println(serviceName + " is OFFLINE or unreachable");
+				if (responseTime >= 0) {
+					System.out.println(service.name + " is ONLINE");
+					System.out.println("Host: " + service.host);
+					System.out.println("Port: " + service.port);
+					System.out.println("Connection time: " + responseTime + " ms");
+				} else {
+					System.out.println(service.name + " is OFFLINE or unreachable");
 			}
 	}
 		public static long getConnectionTime(String host, int port, int timeout) {
